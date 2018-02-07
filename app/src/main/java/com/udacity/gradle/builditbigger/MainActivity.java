@@ -21,11 +21,12 @@ import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static String mJokeText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         String adUnitID = getString(R.string.banner_ad_unit_id);
         MobileAds.initialize(this, adUnitID);
     }
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
     public void tellJoke(View view) {
         JokeTeller jokeTeller = new JokeTeller();
         String joke = jokeTeller.getJoke();
-        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, joke));
+        new EndpointAsyncTask().execute(new Pair<Context, String>(this, joke));
     }
 
-    class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String>{
+    public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String>{
         private MyApi mApiService = null;
         private Context context;
 
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+            mJokeText = s;
             Intent intent = new Intent(getBaseContext(), JokeActivity.class);
             intent.putExtra(JokeTeller.EXTRA_JOKE, s);
             startActivity(intent);
