@@ -7,28 +7,35 @@ import com.example.JokeTeller;
 
 import junit.framework.Assert;
 
+import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.concurrent.CountDownLatch;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 
 /**
  * Created by karina.bernice on 02/02/2018.
  */
 public class EndpointsAsyncTaskTest {
-    MainActivity main = new MainActivity();
+    @Mock
+    EndpointAsyncTask mockedAsyncTask;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
     public void verifyAsyncTaskTest() throws InterruptedException {
         JokeTeller teller = new JokeTeller();
         String joke = teller.getJoke();
 
-        EndpointAsyncTask endpointAsyncTask = new EndpointAsyncTask();
-        CountDownLatch taskCountDown = endpointAsyncTask.getCount();
 
-        endpointAsyncTask.execute(new Pair<Context, String>(null, joke));
-        taskCountDown.await();
+        String answer = mockedAsyncTask.doInBackground(new Pair<Context, String>(null, joke));
+//        taskCountDown.await();
 
-        Assert.assertNotNull(endpointAsyncTask.mJokeText);
+//        Mockito.verify(mockedAsyncTask).onPostExecute(joke);
+        Assert.assertNotNull(answer);
+        Mockito.verify(mockedAsyncTask).doInBackground(new Pair<Context, String>(null, joke));
     }
 }
