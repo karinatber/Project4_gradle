@@ -12,21 +12,23 @@ import android.view.View;
 
 import com.example.JokeTeller;
 import com.example.autotests.jokeactivity.JokeActivity;
+import com.example.karina.bernice.myapplication.backend.myApi.MyApi;
 import com.google.android.gms.ads.MobileAds;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.example.karina.bernice.myapplication.backend.myApi.MyApi;
 
 import java.io.IOException;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityFree extends AppCompatActivity {
     public static String mJokeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String adUnitID = getString(R.string.banner_ad_unit_id);
+        MobileAds.initialize(this, adUnitID);
     }
 
 
