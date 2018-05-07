@@ -5,3 +5,7 @@
 .DS_Store
 /build
 /captures
+/backend/build
+/app/build
+/javajokes/build
+/jokeactivity/build
