@@ -24,6 +24,7 @@ public class EndpointAsyncTask extends AsyncTask<Pair<Context, String>, Void, St
     private Context mContext;
     private CountDownLatch mCount;
     public String mJokeText;
+    AsyncTaskListener mListener;
 
     public CountDownLatch getCount(){
         return mCount;
@@ -44,7 +45,8 @@ public class EndpointAsyncTask extends AsyncTask<Pair<Context, String>, Void, St
         mContext = pairs[0].first;
         String name = pairs[0].second;
         try{
-            return mApiService.sayHi(name).execute().getData();
+            mJokeText = mApiService.sayHi(name).execute().getData();
+            return mJokeText;
         } catch (IOException e){
             return e.getMessage();
         }
@@ -59,6 +61,21 @@ public class EndpointAsyncTask extends AsyncTask<Pair<Context, String>, Void, St
             intent.putExtra(JokeTeller.EXTRA_JOKE, s);
             mContext.startActivity(intent);
         }
+        if (mListener != null){
+            mListener.onComplete(s);
+        }
+    }
+
+    public String getJokeText(){
+        return mJokeText;
+    }
+
+    public void setListener(AsyncTaskListener listener){
+        mListener = listener;
+    }
+
+    public interface AsyncTaskListener {
+        void onComplete(String s);
     }
 }
 
